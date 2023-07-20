@@ -14,7 +14,7 @@ function Login() {
     email: "",
     password: "",
   });
-console.log(account)
+
   const mutation = useMutation({
     mutationFn: (newTodo) => {
       return supabase

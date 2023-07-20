@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HiOutlinePlusSm } from "react-icons/hi";
+import { useMutation } from "@tanstack/react-query";
+import { supabase } from "@/supabaseClient";
 
-function AddTasks() {
+function AddTasks({id,refech,task=[]}) {
   const [show, setShow] = useState(false);
   const [list, setlist] = useState(true)
 
@@ -9,15 +11,16 @@ function AddTasks() {
   const inputRef = useRef();
 
   const [newTask, setnewTask] = useState({
-    title: "",
-    todos: [],
-    time: "",
+    "name": "",
+    "todo": [],
+    "exp": "",
+    "isComplete": false
   });
 
   const handleEnter = () => {
     switch (step) {
       case 1:
-        setnewTask({ ...newTask, title: inputRef.current.value });
+        setnewTask({ ...newTask, "name": inputRef.current.value });
         setStep(2);
         inputRef.current.value = "";
         break;
@@ -43,7 +46,7 @@ function AddTasks() {
         }
         setnewTask({
           ...newTask,
-          todos: [...newTask.todos, inputRef.current.value],
+          "todo": [...newTask.todo, inputRef.current.value],
         });
         inputRef.current.value = "";
         break;
@@ -53,7 +56,7 @@ function AddTasks() {
           inputRef.current.value = "";
           break;
         }
-        setnewTask({...newTask, time: inputRef.current.value})
+        setnewTask({...newTask, "exp": inputRef.current.value})
         inputRef.current.value = "";
         setStep(9)
         break;
@@ -62,10 +65,17 @@ function AddTasks() {
         setStep(1)
         inputRef.current.value = "";
         setnewTask({
-          title: "",
-          todos: [],
-          time: "",
+          "name": "",
+          "todo": [],
+          "exp": "",
+          "isComplete": false
         })
+        break;
+      }
+      if(inputRef.current.value === "Y" || inputRef.current.value === "y"){
+        inputRef.current.value = "";
+        mutation.mutate()
+        setShow(false)
         break;
       }
       default:
@@ -77,6 +87,33 @@ function AddTasks() {
     if (e.keyCode === 13) {
       handleEnter()
   }}
+
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      const res = supabase
+      .from('projects')
+      .update({ task: [...task,newTask] })
+      .eq("id", id)
+      .select()   
+      return res;
+    },
+  });
+
+  const {data} = mutation
+
+  useEffect(() => {
+    if(data?.data !== data){
+      setnewTask({
+        "name": "",
+        "todo": [],
+        "exp": "",
+        "isComplete": false
+      })
+      refech()
+    }
+  }, [data]);
+
+  console.log(newTask)
 
   return (
     <section className="flex flex-col relative duration-500">
@@ -97,19 +134,19 @@ function AddTasks() {
         } opacity-0 flex-col`}
       >
         {step >= 1 && <h2>Enter a new task name!</h2>}
-        <p>- Name task: {newTask.title}</p>
+        <p>- Name task: {newTask.name}</p>
         {step >= 2 && <h2>Add todo? (Y/N)</h2>}
         {(step > 3 && list)  && <h2>Enter name todo!</h2>}
         {!list && <h2>- Not todo</h2>}
         {(step > 3 && list) && <h2>- List todo: (Y: complete)</h2>}
         {(step >= 4 && list) && (
           <ol className="list-decimal ml-12">
-            {newTask.todos.map((item, index) => 
+            {newTask.todo.map((item, index) => 
               <li key={index}>{item}</li>
             )}
           </ol>
         )}
-        {step >= 5 && <h2>Enter time! (N: Skip) {newTask.time}</h2>}
+        {step >= 5 && <h2>Enter exp! (N: Skip) {newTask.exp}</h2>}
         {step >= 9 && <h2>Create task? (Y/N)</h2>}
         {step >= 10 && <h2>Creating...</h2>}
         <div className="flex gap-4 mt-4 w-full">

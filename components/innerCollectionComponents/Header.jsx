@@ -2,13 +2,14 @@ import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
-function Header() {
+function Header({data}) {
+
   return (
     <section className="flex select-none items-center justify-between gap-8">
       <button className="text-white bg-slate-600 cursor-pointer px-2 py-2 hover:scale-110 rounded-lg duration-500">
         <IoIosArrowBack />
       </button>
-      <h1 className="font-semibold text-[18px] text-white mr-auto">School</h1>
+      <h1 className="font-semibold text-[18px] text-white mr-auto">{data?.name}</h1>
       <div className="dropdown dropdown-end">
         <button
           tabIndex={0}

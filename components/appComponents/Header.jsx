@@ -19,6 +19,11 @@ function Header() {
     localStorage.removeItem("uuid")
     setAuth(null)
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => settime(new Date().toLocaleString()),1000)
+    return () => clearTimeout(timer);
+  }, [time]);
   return (
     <header className="px-4 z-50 sticky top-0 select-none py-4 bg-[#20233F] flex justify-between items-center">
       <div className="flex gap-8">

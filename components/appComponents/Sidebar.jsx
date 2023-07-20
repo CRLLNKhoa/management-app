@@ -22,6 +22,16 @@ function Sidebar() {
           </Link>
         </div>
         <h1 className='mt-8 font-bold pt-4 pl-4 pr-4'>My Team</h1>
+        <div className='w-full flex flex-col mt-2'>
+          <Link href="/s" className='flex p-4 items-center gap-2 hover:bg-slate-700 duration-500'>
+            <div className='bg-slate-700 px-4 py-2 text-white rounded-lg'>T</div>
+            Team 1
+          </Link>
+          <Link href="/s" className='flex p-4 items-center gap-2 hover:bg-slate-700 duration-500'>
+            <div className='bg-slate-700 px-4 py-2 text-white rounded-lg'>S</div>
+            Sopasity
+          </Link>
+        </div>
     </section>
   )
 }
