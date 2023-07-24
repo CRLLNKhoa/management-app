@@ -16,7 +16,7 @@ function Sidebar() {
             <div className='bg-slate-700 px-2 py-2 text-white rounded-lg'><RiDashboardFill /></div>
             Dashboard
           </Link>
-          <Link href="/s" className='flex p-4 items-center gap-2 hover:bg-slate-700 duration-500'>
+          <Link href="/project" className='flex p-4 items-center gap-2 hover:bg-slate-700 duration-500'>
             <div className='bg-slate-700 px-2 py-2 text-white rounded-lg'><RiFolderFill /></div>
             Projects
           </Link>

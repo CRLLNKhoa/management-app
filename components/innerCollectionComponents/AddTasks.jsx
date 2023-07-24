@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { HiOutlinePlusSm } from "react-icons/hi";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/supabaseClient";
+import {RiCloseLine} from "react-icons/ri"
 
 function AddTasks({id,refech,task=[]}) {
   const [show, setShow] = useState(false);
@@ -82,14 +83,14 @@ function AddTasks({id,refech,task=[]}) {
         break;
     }
   };
-
+console.log(task)
   const handleKeyDown = (e) => {
     if (e.keyCode === 13) {
       handleEnter()
   }}
 
   const mutation = useMutation({
-    mutationFn: (data) => {
+    mutationFn: (datasss) => {
       const res = supabase
       .from('projects')
       .update({ task: [...task,newTask] })
@@ -112,8 +113,6 @@ function AddTasks({id,refech,task=[]}) {
       refech()
     }
   }, [data]);
-
-  console.log(newTask)
 
   return (
     <section className="flex flex-col relative duration-500">
@@ -157,7 +156,11 @@ function AddTasks({id,refech,task=[]}) {
           />
           <button onClick={handleEnter}>Enter</button>
         </div>
+          <div onClick={()=> setShow(!show)} className="absolute cursor-pointer text-black hover:scale-110 duration-500 top-4 right-4 bg-white w-6 h-6 rounded-full flex justify-center items-center">
+              <RiCloseLine />
+          </div>
       </section>
+
     </section>
   );
 }
